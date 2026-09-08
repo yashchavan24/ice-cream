@@ -1,0 +1,105 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Scoop Nirvana — Admin</title>
+  <link rel="icon" href="data:image/svg+xml,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 100 100'><text y='.9em' font-size='90'>📊</text></svg>" />
+  <style>
+    :root { --bg:#201216; --card:#2f1a21; --ink:#ffefe4; --soft:#c9b3a4; --line:#472a33; --accent:#ff5c8a; --gold:#ffb03a; --green:#4ade80; }
+    * { box-sizing: border-box; }
+    body { margin:0; font-family:"Poppins",system-ui,sans-serif; background:var(--bg); color:var(--ink); padding:32px 20px; }
+    h1 { font-family:"Baloo 2",system-ui,sans-serif; margin:0 0 6px; }
+    .sub { color:var(--soft); margin:0 0 28px; font-size:.9rem; }
+    .stats { display:grid; grid-template-columns:repeat(auto-fit,minmax(150px,1fr)); gap:14px; margin-bottom:30px; }
+    .stat { background:var(--card); border:1px solid var(--line); border-radius:16px; padding:18px; }
+    .stat b { display:block; font-size:1.6rem; font-family:"Baloo 2",sans-serif; color:var(--gold); }
+    .stat span { color:var(--soft); font-size:.8rem; }
+    h2 { font-family:"Baloo 2",sans-serif; margin:30px 0 12px; font-size:1.2rem; }
+    .wrap { overflow-x:auto; border:1px solid var(--line); border-radius:16px; }
+    table { width:100%; border-collapse:collapse; font-size:.85rem; min-width:640px; }
+    th { text-align:left; padding:10px 14px; background:rgba(255,92,138,.12); color:var(--gold); position:sticky; top:0; }
+    td { padding:9px 14px; border-top:1px solid var(--line); vertical-align:top; }
+    tr:hover td { background:rgba(255,255,255,.03); }
+    .pill { padding:3px 10px; border-radius:999px; font-size:.72rem; font-weight:700; }
+    .pill.paid, .pill.success { background:rgba(74,222,128,.15); color:var(--green); }
+    .pill.pending_payment, .pill.pending_cash, .pill.pay_on_delivery { background:rgba(255,176,58,.15); color:var(--gold); }
+    .pill.payment_failed, .pill.failed { background:rgba(244,63,94,.15); color:#fb7185; }
+    .muted { color:var(--soft); }
+    button { background:var(--accent); color:#fff; border:none; border-radius:999px; padding:10px 22px; font-weight:700; cursor:pointer; font-family:inherit; }
+    button:hover { filter:brightness(1.1); }
+    .empty { color:var(--soft); padding:20px; text-align:center; }
+  </style>
+</head>
+<body>
+  <h1>📊 Scoop Nirvana — Admin</h1>
+  <p class="sub">Live data from the JSON store in <code>./data</code></p>
+  <button id="refresh">↻ Refresh</button>
+
+  <div class="stats" id="stats"></div>
+
+  <h2>🧾 Orders</h2>
+  <div class="wrap"><table id="ordersTable">
+    <thead><tr><th>Order</th><th>Customer</th><th>Items</th><th>Total</th><th>Status</th><th>Placed</th></tr></thead>
+    <tbody></tbody>
+  </table></div>
+
+  <h2>💳 Payments</h2>
+  <div class="wrap"><table id="paymentsTable">
+    <thead><tr><th>Payment</th><th>Order</th><th>Amount</th><th>Method</th><th>Status</th><th>Ref</th><th>Time</th></tr></thead>
+    <tbody></tbody>
+  </table></div>
+
+  <h2>💬 Feedback</h2>
+  <div class="wrap"><table id="feedbackTable">
+    <thead><tr><th>From</th><th>Rating</th><th>Message</th><th>Time</th></tr></thead>
+    <tbody></tbody>
+  </table></div>
+
+<script>
+const $ = (s) => document.querySelector(s);
+const esc = (t) => String(t ?? "").replace(/[&<>"']/g, (c) => ({ "&":"&amp;","<":"&lt;",">":"&gt;",'"':"&quot;","'":"&#39;" }[c]));
+const money = (n) => "₹" + Number(n).toFixed(2);
+const when = (iso) => new Date(iso).toLocaleString();
+
+async function load() {
+  try {
+    const [stats, orders, feedback, pays] = await Promise.all([
+      fetch("/api/admin/stats").then(r => r.json()),
+      fetch("/api/orders").then(r => r.json()),
+      fetch("/api/feedback").then(r => r.json()),
+      fetch("/api/payments").then(r => r.json()),
+    ]);
+    $("#stats").innerHTML = [
+      ["Orders", stats.orders], ["Paid", stats.paid],
+      ["Revenue", money(stats.revenue)], ["Feedback", stats.feedback],
+      ["Avg rating", stats.avgRating + " ★"],
+    ].map(([l, v]) => `<div class="stat"><b>${esc(v)}</b><span>${l}</span></div>`).join("");
+
+    $("#ordersTable tbody").innerHTML = (orders.orders || []).slice().reverse().map(o => `
+      <tr><td><b>${esc(o.orderId)}</b></td>
+      <td>${esc(o.customerName)}<br><span class="muted">${esc(o.email)}</span></td>
+      <td>${o.items.map(i => `${esc(i.name)} ×${i.qty}`).join("<br>")}</td>
+      <td><b>${money(o.totals.total)}</b></td>
+      <td><span class="pill ${esc(o.status)}">${esc(o.status)}</span></td>
+      <td class="muted">${when(o.createdAt)}</td></tr>`).join("") || `<tr><td colspan="6" class="empty">No orders yet — go scoop something!</td></tr>`;
+
+    $("#paymentsTable tbody").innerHTML = (pays.payments || []).slice().reverse().map(p => `
+      <tr><td><b>${esc(p.paymentId)}</b></td><td>${esc(p.orderId)}</td>
+      <td>${money(p.amount)}</td><td>${esc(p.method)}</td>
+      <td><span class="pill ${esc(p.status)}">${esc(p.status)}</span></td>
+      <td class="muted">${esc(p.txnRef || "—")}</td><td class="muted">${when(p.createdAt)}</td></tr>`).join("") || `<tr><td colspan="7" class="empty">No payments yet</td></tr>`;
+
+    $("#feedbackTable tbody").innerHTML = (feedback.feedback || []).slice().reverse().map(f => `
+      <tr><td>${esc(f.name)}<br><span class="muted">${esc(f.email || "—")}</span></td>
+      <td>${"★".repeat(f.rating)}${"☆".repeat(5 - f.rating)}</td>
+      <td>${esc(f.message)}</td><td class="muted">${when(f.createdAt)}</td></tr>`).join("") || `<tr><td colspan="4" class="empty">No feedback yet</td></tr>`;
+  } catch (e) {
+    document.body.insertAdjacentHTML("afterbegin", `<p style="color:#fb7185">⚠ Could not reach API — is server.js running?</p>`);
+  }
+}
+$("#refresh").addEventListener("click", load);
+load(); setInterval(load, 15000);
+</script>
+</body>
+</html>

@@ -4,7 +4,7 @@
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
   <title>Scoop Nirvana — Handcrafted Ice Cream</title>
-  <meta name="description" content="Scoop Nirvana — small-batch, handcrafted ice cream that melts worries away. Explore 40+ flavors, our craft, and the happiest corner of town." />
+  <meta name="description" content="Scoop Nirvana — small-batch, handcrafted ice cream. Slide through flavors, order online, pay with UPI or card." />
   <link rel="icon" href="data:image/svg+xml,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 100 100'><text y='.9em' font-size='90'>🍦</text></svg>" />
   <link rel="preconnect" href="https://fonts.googleapis.com" />
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
@@ -24,86 +24,63 @@
     <p class="preloader__text">Scooping something special…</p>
   </div>
 
-  <!-- ======= SVG goo filter defs ======= -->
+  <!-- SVG defs -->
   <svg width="0" height="0" style="position:absolute" aria-hidden="true">
     <defs>
-      <filter id="goo">
-        <feGaussianBlur in="SourceGraphic" stdDeviation="8" result="blur" />
-        <feColorMatrix in="blur" mode="matrix" values="1 0 0 0 0  0 1 0 0 0  0 0 1 0 0  0 0 0 18 -7" result="goo" />
-        <feComposite in="SourceGraphic" in2="goo" operator="atop" />
-      </filter>
+      <filter id="goo"><feGaussianBlur in="SourceGraphic" stdDeviation="8" result="blur"/><feColorMatrix in="blur" mode="matrix" values="1 0 0 0 0  0 1 0 0 0  0 0 1 0 0  0 0 0 18 -7" result="goo"/><feComposite in="SourceGraphic" in2="goo" operator="atop"/></filter>
     </defs>
   </svg>
 
-  <!-- ======= Ambient background floats ======= -->
-  <div class="bg-decor" aria-hidden="true">
-    <span class="bg-decor__item" data-parallax="0.15" style="--s:90px; top:12%; left:6%;">🍓</span>
-    <span class="bg-decor__item" data-parallax="0.1" style="--s:70px; top:30%; right:8%;">🍫</span>
-    <span class="bg-decor__item" data-parallax="0.22" style="--s:60px; top:64%; left:10%;">🍒</span>
-    <span class="bg-decor__item" data-parallax="0.12" style="--s:80px; top:78%; right:12%;">🥭</span>
-    <span class="bg-decor__item" data-parallax="0.18" style="--s:54px; top:45%; left:46%;">🫐</span>
-    <span class="bg-decor__item bg-decor__item--ring" data-parallax="0.08" style="--s:180px; top:8%; right:30%;"></span>
-    <span class="bg-decor__item bg-decor__item--ring" data-parallax="0.14" style="--s:120px; top:70%; right:4%;"></span>
-  </div>
+  <!-- ======= Progress rail + dots ======= -->
+  <div class="rail" aria-hidden="true"><span class="rail__bar" id="railBar"></span></div>
+  <nav class="dots" id="slideDots" aria-label="Slides"></nav>
 
   <!-- ======= Navbar ======= -->
   <header class="nav" id="nav">
-    <a class="nav__logo" href="#top" aria-label="Scoop Nirvana home">
+    <a class="nav__logo" href="#slide-hero" data-goto="0" aria-label="Scoop Nirvana home">
       <svg viewBox="0 0 48 48" class="nav__logo-svg" aria-hidden="true">
-        <circle cx="24" cy="14" r="9" fill="#ff6b9d"/>
-        <circle cx="15" cy="20" r="8" fill="#ffd166"/>
-        <circle cx="33" cy="20" r="8" fill="#a78bfa"/>
+        <circle cx="24" cy="14" r="9" fill="#ff6b9d"/><circle cx="15" cy="20" r="8" fill="#ffd166"/><circle cx="33" cy="20" r="8" fill="#a78bfa"/>
         <path d="M24 22 L34 42 Q24 48 14 42 Z" fill="#e8a952"/>
         <path d="M17.5 30 Q24 34 30.5 30" stroke="#fff3e0" stroke-width="2" fill="none" stroke-linecap="round"/>
       </svg>
       <span>Scoop<em>Nirvana</em></span>
     </a>
-
     <nav class="nav__links" id="navLinks" aria-label="Primary">
-      <a href="#flavors" class="nav__link">Flavors</a>
-      <a href="#craft" class="nav__link">Our Craft</a>
-      <a href="#gallery" class="nav__link">Gallery</a>
-      <a href="#joy" class="nav__link">Joy</a>
-      <a href="#visit" class="nav__link">Visit</a>
+      <a href="#slide-hero" class="nav__link" data-goto="0">Home</a>
+      <a href="#slide-flavors" class="nav__link" data-goto="1">Flavors</a>
+      <a href="#slide-3d" class="nav__link" data-goto="2">3D Studio</a>
+      <a href="#slide-gallery" class="nav__link" data-goto="3">Gallery</a>
+      <a href="#slide-love" class="nav__link" data-goto="4">Joy</a>
+      <a href="#slide-feedback" class="nav__link" data-goto="5">Feedback</a>
       <span class="nav__blob" aria-hidden="true"></span>
     </nav>
-
     <div class="nav__actions">
-      <button class="theme-toggle" id="themeToggle" aria-label="Toggle dark mode" title="Lights on/off">🌙</button>
-      <a href="#visit" class="btn btn--small btn--primary nav__cta">Order Now</a>
-      <button class="nav__burger" id="navBurger" aria-label="Open menu" aria-expanded="false">
-        <span></span><span></span><span></span>
-      </button>
+      <button class="theme-toggle" id="themeToggle" aria-label="Toggle dark mode">🌙</button>
+      <button class="cart-btn" id="cartBtn" aria-label="Open cart">🛒<span class="cart-btn__count" id="cartCount">0</span></button>
+      <button class="nav__burger" id="navBurger" aria-label="Open menu" aria-expanded="false"><span></span><span></span><span></span></button>
     </div>
   </header>
 
-  <main id="top">
+  <!-- ======= SLIDE DECK ======= -->
+  <main class="deck" id="deck">
 
-    <!-- ======= HERO ======= -->
-    <section class="hero">
-      <div class="hero__inner">
+    <!-- SLIDE 0 · HERO -->
+    <section class="slide is-active" data-anim="lift" id="slide-hero">
+      <div class="slide__inner hero">
         <div class="hero__copy">
           <p class="hero__badge reveal">🍦 Freshly churned every morning</p>
           <h1 class="hero__title">
             <span class="reveal" style="--d:.05s">Life is short,</span><br />
             <span class="reveal" style="--d:.15s">eat the</span>
-            <span class="hero__word-rotate reveal" style="--d:.25s">
-              <span class="word-rotator" id="wordRotator">
-                <span class="word-rotator__word is-active">happiness</span>
-                <span class="word-rotator__word">swirls</span>
-                <span class="word-rotator__word">magic</span>
-                <span class="word-rotator__word">summer</span>
-                <span class="word-rotator__word">rainbows</span>
-              </span>
-            </span>
+            <span class="hero__word-rotate reveal" style="--d:.25s"><span class="word-rotator" id="wordRotator">
+              <span class="word-rotator__word is-active">happiness</span><span class="word-rotator__word">swirls</span>
+              <span class="word-rotator__word">magic</span><span class="word-rotator__word">summer</span><span class="word-rotator__word">rainbows</span>
+            </span></span>
           </h1>
-          <p class="hero__sub reveal" style="--d:.35s">
-            Small-batch, slow-churned ice cream made with real fruit, single-origin
-            cocoa and absurd amounts of love. One spoon and you're in Nirvana.
-          </p>
+          <p class="hero__sub reveal" style="--d:.35s">Small-batch, slow-churned ice cream made with real fruit and absurd amounts of love. One spoon and you're in Nirvana.</p>
           <div class="hero__cta reveal" style="--d:.45s">
-            <a href="#flavors" class="btn btn--primary magnetic">Explore Flavors<span class="btn__shine"></span></a>
-            <a href="#craft" class="btn btn--ghost magnetic">Watch our craft ✨</a>
+            <button class="btn btn--primary magnetic" data-goto="1">Explore flavors<span class="btn__shine"></span></button>
+            <button class="btn btn--ghost magnetic" data-goto="2">Spin the 3D cone ✨</button>
           </div>
           <div class="hero__stats reveal" style="--d:.55s">
             <div class="stat"><span class="stat__num" data-count="40">0</span><span class="stat__label">flavors</span></div>
@@ -111,333 +88,270 @@
             <div class="stat"><span class="stat__num" data-count="4.9" data-decimal="1">0</span><span class="stat__label">★ average love</span></div>
           </div>
         </div>
-
         <div class="hero__visual" data-tilt-scene>
           <div class="hero__blob" data-parallax="0.06">
             <img src="https://images.unsplash.com/photo-1563805042-7684c019e1cb?q=80&w=900&auto=format&fit=crop" alt="A towering chocolate fudge ice cream sundae" class="hero__img" />
-            <div class="hero__drip" aria-hidden="true">
-              <span style="--i:0"></span><span style="--i:1"></span><span style="--i:2"></span>
-              <span style="--i:3"></span><span style="--i:4"></span><span style="--i:5"></span>
-              <span style="--i:6"></span>
-            </div>
+            <div class="hero__drip" aria-hidden="true"><span style="--i:0"></span><span style="--i:1"></span><span style="--i:2"></span><span style="--i:3"></span><span style="--i:4"></span><span style="--i:5"></span><span style="--i:6"></span></div>
           </div>
           <div class="hero__sprinkles" aria-hidden="true">
-            <i style="--sx:8%;  --sy:18%; --sr:20deg; --sd:0s"></i>
-            <i style="--sx:78%; --sy:6%;  --sr:60deg; --sd:.4s"></i>
-            <i style="--sx:88%; --sy:52%; --sr:-30deg; --sd:.8s"></i>
-            <i style="--sx:4%;  --sy:66%; --sr:80deg; --sd:.2s"></i>
-            <i style="--sx:40%; --sy:-4%; --sr:-70deg; --sd:1s"></i>
-            <i style="--sx:60%; --sy:86%; --sr:35deg; --sd:.6s"></i>
+            <i style="--sx:8%;--sy:18%;--sr:20deg;--sd:0s"></i><i style="--sx:78%;--sy:6%;--sr:60deg;--sd:.4s"></i>
+            <i style="--sx:88%;--sy:52%;--sr:-30deg;--sd:.8s"></i><i style="--sx:4%;--sy:66%;--sr:80deg;--sd:.2s"></i>
+            <i style="--sx:40%;--sy:-4%;--sr:-70deg;--sd:1s"></i><i style="--sx:60%;--sy:86%;--sr:35deg;--sd:.6s"></i>
           </div>
           <div class="orbit" data-parallax="0.1" aria-hidden="true">
-            <div class="orbit__item" style="--a:0deg">🍓</div>
-            <div class="orbit__item" style="--a:120deg">🍪</div>
-            <div class="orbit__item" style="--a:240deg">🫐</div>
+            <div class="orbit__item" style="--a:0deg">🍓</div><div class="orbit__item" style="--a:120deg">🍪</div><div class="orbit__item" style="--a:240deg">🫐</div>
           </div>
           <div class="hero__chip hero__chip--1 float-card" data-parallax="0.16">🌿 100% natural</div>
           <div class="hero__chip hero__chip--2 float-card" data-parallax="0.22">🚚 30-min delivery</div>
           <div class="hero__chip hero__chip--3 float-card" data-parallax="0.12">🏆 No.1 in town</div>
         </div>
       </div>
-
-      <a href="#flavors" class="hero__scroll-cue" aria-label="Scroll to flavors">
-        <span class="hero__mouse"><span></span></span>
-        <em>scoop below</em>
-      </a>
+      <div class="slide__hint" aria-hidden="true"><span class="hero__mouse"><span></span></span><em>scroll · swipe · use keys</em></div>
     </section>
 
-    <!-- ======= MARQUEE ======= -->
-    <div class="marquee" aria-hidden="true">
-      <div class="marquee__track">
-        <span>Belgian Chocolate</span><i>✦</i><span>Alphonso Mango</span><i>✦</i>
-        <span>Madagascar Vanilla</span><i>✦</i><span>Wild Strawberry</span><i>✦</i>
-        <span>Roasted Pistachio</span><i>✦</i><span>Blueberry Cheesecake</span><i>✦</i>
-        <span>Salted Caramel</span><i>✦</i><span>Tender Coconut</span><i>✦</i>
-        <span>Belgian Chocolate</span><i>✦</i><span>Alphonso Mango</span><i>✦</i>
-        <span>Madagascar Vanilla</span><i>✦</i><span>Wild Strawberry</span><i>✦</i>
-        <span>Roasted Pistachio</span><i>✦</i><span>Blueberry Cheesecake</span><i>✦</i>
-        <span>Salted Caramel</span><i>✦</i><span>Tender Coconut</span><i>✦</i>
-      </div>
-    </div>
-
-    <!-- ======= FLAVORS ======= -->
-    <section class="section" id="flavors">
-      <div class="section__head">
-        <p class="eyebrow reveal">— the menu —</p>
-        <h2 class="section__title reveal">Pick your <span class="squiggle">poison</span></h2>
-        <p class="section__sub reveal">Churned in micro-batches. Gone by evening. No regrets, ever.</p>
-      </div>
-
-      <div class="flavors__filters reveal" role="tablist" aria-label="Filter flavors">
-        <button class="chip is-active" data-filter="all" role="tab" aria-selected="true">All ✨</button>
-        <button class="chip" data-filter="fruity" role="tab" aria-selected="false">Fruity 🍓</button>
-        <button class="chip" data-filter="choco" role="tab" aria-selected="false">Choco 🍫</button>
-        <button class="chip" data-filter="classic" role="tab" aria-selected="false">Classic 🍦</button>
-      </div>
-
-      <div class="flavors__grid" id="flavorGrid">
-
-        <article class="flavor-card tilt is-visible" data-tags="choco">
-          <div class="flavor-card__media">
-            <img src="https://images.unsplash.com/photo-1551024506-0bccd828d307?q=80&w=700&auto=format&fit=crop" alt="Dark chocolate sundae with caramel pour and wafer rolls" loading="lazy" />
-            <span class="flavor-card__tag">Chef's pick</span>
-          </div>
-          <div class="flavor-card__body">
-            <div class="flavor-card__row">
-              <h3>Midnight Fudge Jar</h3>
-              <span class="flavor-card__price">$6</span>
-            </div>
-            <p>72% Belgian cocoa, salted caramel rain, wafer roll roof.</p>
-            <div class="flavor-card__meta"><span>★★★★★</span><button class="btn-cart" aria-label="Add Midnight Fudge Jar to cart">Add +</button></div>
-          </div>
-        </article>
-
-        <article class="flavor-card tilt" data-tags="classic">
-          <div class="flavor-card__media">
-            <img src="https://images.unsplash.com/photo-1497034825429-c343d7c6a68f?q=80&w=700&auto=format&fit=crop" alt="Pastel pink ice cream scoop on a waffle cone against a yellow sky" loading="lazy" />
-            <span class="flavor-card__tag">Bestseller</span>
-          </div>
-          <div class="flavor-card__body">
-            <div class="flavor-card__row">
-              <h3>Strawberry Clouds</h3>
-              <span class="flavor-card__price">$5</span>
-            </div>
-            <p>Pastel-pink churn piled high on a golden waffle cone.</p>
-            <div class="flavor-card__meta"><span>★★★★★</span><button class="btn-cart" aria-label="Add Strawberry Clouds to cart">Add +</button></div>
-          </div>
-        </article>
-
-        <article class="flavor-card tilt" data-tags="fruity">
-          <div class="flavor-card__media">
-            <img src="https://images.unsplash.com/photo-1488900128323-21503983a07e?q=80&w=700&auto=format&fit=crop" alt="Berry popsicles studded with whole raspberries" loading="lazy" />
-            <span class="flavor-card__tag flavor-card__tag--new">New</span>
-          </div>
-          <div class="flavor-card__body">
-            <div class="flavor-card__row">
-              <h3>Berry Bliss Pops</h3>
-              <span class="flavor-card__price">$5</span>
-            </div>
-            <p>Blackberry-and-raspberry pops with zero syrup lies.</p>
-            <div class="flavor-card__meta"><span>★★★★☆</span><button class="btn-cart" aria-label="Add Berry Bliss Pops to cart">Add +</button></div>
-          </div>
-        </article>
-
-        <article class="flavor-card tilt" data-tags="classic">
-          <div class="flavor-card__media">
-            <img src="https://images.unsplash.com/photo-1560008581-09826d1de69e?q=80&w=700&auto=format&fit=crop" alt="Vanilla scoop coated in rainbow sprinkles on a pedestal" loading="lazy" />
-          </div>
-          <div class="flavor-card__body">
-            <div class="flavor-card__row">
-              <h3>Sprinkle Party</h3>
-              <span class="flavor-card__price">$4</span>
-            </div>
-            <p>Vanilla-bean scoop rolled in a rainbow of crackly sprinkles.</p>
-            <div class="flavor-card__meta"><span>★★★★★</span><button class="btn-cart" aria-label="Add Sprinkle Party to cart">Add +</button></div>
-          </div>
-        </article>
-
-        <article class="flavor-card tilt" data-tags="classic">
-          <div class="flavor-card__media">
-            <img src="https://images.unsplash.com/photo-1516559828984-fb3b99548b21?q=80&w=700&auto=format&fit=crop" alt="Scoop of purple ube ice cream in a dark bowl" loading="lazy" />
-            <span class="flavor-card__tag flavor-card__tag--new">New</span>
-          </div>
-          <div class="flavor-card__body">
-            <div class="flavor-card__row">
-              <h3>Ube Dream</h3>
-              <span class="flavor-card__price">$6</span>
-            </div>
-            <p>Roasted purple yam and coconut cream, extra silky.</p>
-            <div class="flavor-card__meta"><span>★★★★★</span><button class="btn-cart" aria-label="Add Ube Dream to cart">Add +</button></div>
-          </div>
-        </article>
-
-        <article class="flavor-card tilt" data-tags="fruity">
-          <div class="flavor-card__media">
-            <img src="https://images.unsplash.com/photo-1570197788417-0e82375c9371?q=80&w=700&auto=format&fit=crop" alt="Bowls of orange sorbet with a spoon" loading="lazy" />
-          </div>
-          <div class="flavor-card__body">
-            <div class="flavor-card__row">
-              <h3>Sunset Sorbet</h3>
-              <span class="flavor-card__price">$5</span>
-            </div>
-            <p>Blood-orange sorbet — dairy-free and dangerously refreshing.</p>
-            <div class="flavor-card__meta"><span>★★★★☆</span><button class="btn-cart" aria-label="Add Sunset Sorbet to cart">Add +</button></div>
-          </div>
-        </article>
-
-      </div>
-    </section>
-
-    <!-- ======= PARALLAX SHOWCASE ======= -->
-    <section class="showcase">
-      <div class="showcase__bg" data-parallax-bg="0.25" role="img" aria-label="Gelato display counter full of flavors"></div>
-      <div class="showcase__content">
-        <h2 class="showcase__title reveal">Churned slow.<br /><span>Eaten fast.</span></h2>
-        <p class="showcase__sub reveal">Eight hours of churning for thirty seconds of pure joy — worth every swirl.</p>
-      </div>
-      <figure class="showcase__card showcase__card--1 float-card reveal" style="--d:.1s">
-        <img src="https://images.unsplash.com/photo-1576506295286-5cda18df43e7?q=80&w=500&auto=format&fit=crop" alt="Chunky ice cream scoops in a waffle cone" loading="lazy" />
-        <figcaption>The street-side classic</figcaption>
-      </figure>
-      <figure class="showcase__card showcase__card--2 float-card reveal" style="--d:.25s">
-        <img src="https://images.unsplash.com/photo-1501443762994-82bd5dace89a?q=80&w=500&auto=format&fit=crop" alt="A confetti of colorful mini ice cream cones" loading="lazy" />
-        <figcaption>A rainbow of mini cones</figcaption>
-      </figure>
-      <figure class="showcase__card showcase__card--3 float-card reveal" style="--d:.4s">
-        <img src="https://images.unsplash.com/photo-1507750549272-e58742b1df80?q=80&w=500&auto=format&fit=crop" alt="A toppled ice cream cone with all the toppings" loading="lazy" />
-        <figcaption>The happy little mess</figcaption>
-      </figure>
-    </section>
-
-    <!-- ======= CRAFT / PROCESS ======= -->
-    <section class="section" id="craft">
-      <div class="section__head">
-        <p class="eyebrow reveal">— our craft —</p>
-        <h2 class="section__title reveal">From farm to <span class="squiggle">freezer</span></h2>
-      </div>
-      <div class="craft__grid">
-        <div class="craft-card reveal" style="--d:.05s">
-          <span class="craft-card__emoji" data-wiggle>🐄</span>
-          <span class="craft-card__step">01</span>
-          <h3>Farm-fresh cream</h3>
-          <p>Grass-fed dairy from a co-op 20 km away, churned within 24 hours.</p>
+    <!-- SLIDE 1 · FLAVORS -->
+    <section class="slide" data-anim="flipCards" id="slide-flavors">
+      <div class="slide__inner">
+        <div class="section__head">
+          <p class="eyebrow reveal">— the menu —</p>
+          <h2 class="section__title reveal">Pick your <span class="squiggle">poison</span></h2>
+          <p class="section__sub reveal">Churned in micro-batches. Add to cone, pay by UPI or card.</p>
         </div>
-        <div class="craft-card reveal" style="--d:.15s">
-          <span class="craft-card__emoji" data-wiggle>🍓</span>
-          <span class="craft-card__step">02</span>
-          <h3>Real fruit, zero fakes</h3>
-          <p>No essences, no color codes — just fruit that bruises on the way home.</p>
+        <div class="flavors__filters reveal" role="tablist" aria-label="Filter flavors">
+          <button class="chip is-active" data-filter="all" role="tab" aria-selected="true">All ✨</button>
+          <button class="chip" data-filter="fruity" role="tab" aria-selected="false">Fruity 🍓</button>
+          <button class="chip" data-filter="choco" role="tab" aria-selected="false">Choco 🍫</button>
+          <button class="chip" data-filter="classic" role="tab" aria-selected="false">Classic 🍦</button>
         </div>
-        <div class="craft-card reveal" style="--d:.25s">
-          <span class="craft-card__emoji" data-wiggle>🌀</span>
-          <span class="craft-card__step">03</span>
-          <h3>Slow churn, less air</h3>
-          <p>We over-run at just 20% so every scoop is dense, silky and serious.</p>
-        </div>
-        <div class="craft-card reveal" style="--d:.35s">
-          <span class="craft-card__emoji" data-wiggle>❄️</span>
-          <span class="craft-card__step">04</span>
-          <h3>Blast-frozen bliss</h3>
-          <p>Ultra-fast freezing locks in texture — no icy bits, ever.</p>
+        <div class="flavors__grid" id="flavorGrid">
+          <article class="flavor-card tilt" data-tags="choco" data-id="fudge-jar" data-name="Midnight Fudge Jar" data-price="249">
+            <div class="flavor-card__media"><img src="https://images.unsplash.com/photo-1551024506-0bccd828d307?q=80&w=700&auto=format&fit=crop" alt="Dark chocolate sundae with caramel pour" loading="lazy" /><span class="flavor-card__tag">Chef's pick</span></div>
+            <div class="flavor-card__body"><div class="flavor-card__row"><h3>Midnight Fudge Jar</h3><span class="flavor-card__price">₹249</span></div>
+              <p>72% Belgian cocoa, salted caramel rain, wafer roll roof.</p>
+              <div class="flavor-card__meta"><span>★★★★★</span><button class="btn-cart">Add +</button></div></div>
+          </article>
+          <article class="flavor-card tilt" data-tags="classic" data-id="strawberry-clouds" data-name="Strawberry Clouds" data-price="199">
+            <div class="flavor-card__media"><img src="https://images.unsplash.com/photo-1497034825429-c343d7c6a68f?q=80&w=700&auto=format&fit=crop" alt="Pastel pink scoop on a waffle cone" loading="lazy" /><span class="flavor-card__tag">Bestseller</span></div>
+            <div class="flavor-card__body"><div class="flavor-card__row"><h3>Strawberry Clouds</h3><span class="flavor-card__price">₹199</span></div>
+              <p>Pastel-pink churn piled high on a golden waffle cone.</p>
+              <div class="flavor-card__meta"><span>★★★★★</span><button class="btn-cart">Add +</button></div></div>
+          </article>
+          <article class="flavor-card tilt" data-tags="fruity" data-id="berry-pops" data-name="Berry Bliss Pops" data-price="179">
+            <div class="flavor-card__media"><img src="https://images.unsplash.com/photo-1488900128323-21503983a07e?q=80&w=700&auto=format&fit=crop" alt="Berry popsicles with raspberries" loading="lazy" /><span class="flavor-card__tag flavor-card__tag--new">New</span></div>
+            <div class="flavor-card__body"><div class="flavor-card__row"><h3>Berry Bliss Pops</h3><span class="flavor-card__price">₹179</span></div>
+              <p>Blackberry-and-raspberry pops with zero syrup lies.</p>
+              <div class="flavor-card__meta"><span>★★★★☆</span><button class="btn-cart">Add +</button></div></div>
+          </article>
+          <article class="flavor-card tilt" data-tags="classic" data-id="sprinkle-party" data-name="Sprinkle Party" data-price="169">
+            <div class="flavor-card__media"><img src="https://images.unsplash.com/photo-1560008581-09826d1de69e?q=80&w=700&auto=format&fit=crop" alt="Vanilla scoop in rainbow sprinkles" loading="lazy" /></div>
+            <div class="flavor-card__body"><div class="flavor-card__row"><h3>Sprinkle Party</h3><span class="flavor-card__price">₹169</span></div>
+              <p>Vanilla-bean scoop rolled in a rainbow of crackly sprinkles.</p>
+              <div class="flavor-card__meta"><span>★★★★★</span><button class="btn-cart">Add +</button></div></div>
+          </article>
+          <article class="flavor-card tilt" data-tags="classic fruity" data-id="ube-dream" data-name="Ube Dream" data-price="229">
+            <div class="flavor-card__media"><img src="https://images.unsplash.com/photo-1516559828984-fb3b99548b21?q=80&w=700&auto=format&fit=crop" alt="Purple ube scoop in a dark bowl" loading="lazy" /><span class="flavor-card__tag flavor-card__tag--new">New</span></div>
+            <div class="flavor-card__body"><div class="flavor-card__row"><h3>Ube Dream</h3><span class="flavor-card__price">₹229</span></div>
+              <p>Roasted purple yam and coconut cream, extra silky.</p>
+              <div class="flavor-card__meta"><span>★★★★★</span><button class="btn-cart">Add +</button></div></div>
+          </article>
+          <article class="flavor-card tilt" data-tags="fruity" data-id="sunset-sorbet" data-name="Sunset Sorbet" data-price="189">
+            <div class="flavor-card__media"><img src="https://images.unsplash.com/photo-1570197788417-0e82375c9371?q=80&w=700&auto=format&fit=crop" alt="Bowls of orange sorbet" loading="lazy" /></div>
+            <div class="flavor-card__body"><div class="flavor-card__row"><h3>Sunset Sorbet</h3><span class="flavor-card__price">₹189</span></div>
+              <p>Blood-orange sorbet — dairy-free and dangerously refreshing.</p>
+              <div class="flavor-card__meta"><span>★★★★☆</span><button class="btn-cart">Add +</button></div></div>
+          </article>
         </div>
       </div>
     </section>
 
-    <!-- ======= GALLERY ======= -->
-    <section class="section section--tinted" id="gallery">
-      <div class="section__head">
-        <p class="eyebrow reveal">— the gallery —</p>
-        <h2 class="section__title reveal">Moments of <span class="squiggle">melt</span></h2>
-        <p class="section__sub reveal">Click any frame to zoom in. Warning: may cause sudden cravings.</p>
-      </div>
-      <div class="gallery reveal">
-        <figure class="gallery__item"><img src="https://images.unsplash.com/photo-1657225953401-5f95007fc8e0?q=80&w=800&auto=format&fit=crop" alt="Waffle topped with ice cream and a cherry" loading="lazy" /><figcaption>Waffle & cherry dreams</figcaption></figure>
-        <figure class="gallery__item"><img src="https://images.unsplash.com/photo-1576506295286-5cda18df43e7?q=80&w=800&auto=format&fit=crop" alt="Waffle cone loaded with chunky scoops" loading="lazy" /><figcaption>Street-side swirls</figcaption></figure>
-        <figure class="gallery__item"><img src="https://images.unsplash.com/photo-1501443762994-82bd5dace89a?q=80&w=800&auto=format&fit=crop" alt="Colorful mini cones on a pastel table" loading="lazy" /><figcaption>Cone confetti</figcaption></figure>
-        <figure class="gallery__item"><img src="https://images.unsplash.com/photo-1507750549272-e58742b1df80?q=80&w=800&auto=format&fit=crop" alt="A joyful toppled cone with toppings" loading="lazy" /><figcaption>The happy mess</figcaption></figure>
-        <figure class="gallery__item"><img src="https://live.staticflickr.com/8001/7160311205_cdc615ca4c_b.jpg" alt="Gelato tubs with fresh scoops" loading="lazy" /><figcaption>Fresh from the churn</figcaption></figure>
-        <figure class="gallery__item"><img src="https://images.unsplash.com/photo-1563805042-7684c019e1cb?q=80&w=800&auto=format&fit=crop" alt="Chocolate sundae glass with fudge" loading="lazy" /><figcaption>Fudge monolith</figcaption></figure>
-        <figure class="gallery__item"><img src="https://images.unsplash.com/photo-1560801619-01d71da0f70c?q=80&w=800&auto=format&fit=crop" alt="Rows of gelato flavors in a display case" loading="lazy" /><figcaption>Forty flavors deep</figcaption></figure>
-        <figure class="gallery__item"><img src="https://images.unsplash.com/photo-1497034825429-c343d7c6a68f?q=80&w=800&auto=format&fit=crop" alt="Pink scoop against a yellow sky" loading="lazy" /><figcaption>Berry skies</figcaption></figure>
+    <!-- SLIDE 2 · 3D STUDIO -->
+    <section class="slide" data-anim="zoomThrough" id="slide-3d">
+      <div class="slide__inner slide__inner--center studio">
+        <div class="studio__copy">
+          <p class="eyebrow reveal">— the 3d studio —</p>
+          <h2 class="section__title reveal">Drag the <span class="squiggle">cone</span></h2>
+          <p class="section__sub reveal">A real WebGL ice cream — grab it, spin it, watch the drips. Loads instantly, falls back gracefully.</p>
+          <div class="studio__controls reveal">
+            <button class="chip" id="scoopColorBtn">🍦 Change scoop color</button>
+            <button class="chip" id="coneSpinBtn">🌀 Auto-spin on/off</button>
+          </div>
+          <p class="studio__tip reveal">Tip: drag horizontally to rotate, pinch/scroll to zoom.</p>
+        </div>
+        <div class="studio__stage reveal" id="stage3d" aria-label="Interactive 3D ice cream cone — drag to rotate">
+          <canvas id="c3d"></canvas>
+          <div class="studio__fallback" id="c3dFallback" hidden>🍦<br /><small>WebGL unavailable — enjoy this emoji instead</small></div>
+        </div>
       </div>
     </section>
 
-    <!-- ======= TESTIMONIALS ======= -->
-    <section class="section" id="joy">
-      <div class="section__head">
+    <!-- SLIDE 3 · GALLERY + SHOWCASE -->
+    <section class="slide" data-anim="panels" id="slide-gallery">
+      <div class="slide__inner slide__inner--wide">
+        <div class="gallery-head">
+          <div>
+            <p class="eyebrow reveal">— the gallery —</p>
+            <h2 class="section__title reveal">Moments of <span class="squiggle">melt</span></h2>
+          </div>
+          <p class="section__sub reveal">Churned slow, eaten fast. Click any frame to zoom.</p>
+        </div>
+        <div class="gallery reveal">
+          <figure class="gallery__item"><img src="https://images.unsplash.com/photo-1657225953401-5f95007fc8e0?q=80&w=800&auto=format&fit=crop" alt="Waffle topped with ice cream and a cherry" loading="lazy" /><figcaption>Waffle & cherry dreams</figcaption></figure>
+          <figure class="gallery__item"><img src="https://images.unsplash.com/photo-1576506295286-5cda18df43e7?q=80&w=800&auto=format&fit=crop" alt="Waffle cone with chunky scoops" loading="lazy" /><figcaption>Street-side swirls</figcaption></figure>
+          <figure class="gallery__item"><img src="https://images.unsplash.com/photo-1501443762994-82bd5dace89a?q=80&w=800&auto=format&fit=crop" alt="Colorful mini cones" loading="lazy" /><figcaption>Cone confetti</figcaption></figure>
+          <figure class="gallery__item"><img src="https://images.unsplash.com/photo-1507750549272-e58742b1df80?q=80&w=800&auto=format&fit=crop" alt="A joyful toppled cone" loading="lazy" /><figcaption>The happy mess</figcaption></figure>
+          <figure class="gallery__item"><img src="https://live.staticflickr.com/8001/7160311205_cdc615ca4c_b.jpg" alt="Gelato tubs with fresh scoops" loading="lazy" /><figcaption>Fresh from the churn</figcaption></figure>
+          <figure class="gallery__item"><img src="https://images.unsplash.com/photo-1563805042-7684c019e1cb?q=80&w=800&auto=format&fit=crop" alt="Chocolate sundae glass" loading="lazy" /><figcaption>Fudge monolith</figcaption></figure>
+          <figure class="gallery__item"><img src="https://images.unsplash.com/photo-1560801619-01d71da0f70c?q=80&w=800&auto=format&fit=crop" alt="Rows of gelato flavors" loading="lazy" /><figcaption>Forty flavors deep</figcaption></figure>
+          <figure class="gallery__item"><img src="https://images.unsplash.com/photo-1497034825429-c343d7c6a68f?q=80&w=800&auto=format&fit=crop" alt="Pink scoop against yellow sky" loading="lazy" /><figcaption>Berry skies</figcaption></figure>
+        </div>
+      </div>
+    </section>
+
+    <!-- SLIDE 4 · JOY (quotes + marquee) -->
+    <section class="slide" data-anim="curtain" id="slide-love">
+      <div class="slide__inner slide__inner--center">
         <p class="eyebrow reveal">— pure joy —</p>
         <h2 class="section__title reveal">Tummies are <span class="squiggle">talking</span></h2>
-      </div>
-
-      <div class="quotes reveal">
-        <div class="quotes__viewport" id="quotesViewport">
-          <blockquote class="quote is-active">
-            <div class="quote__stars">★★★★★</div>
-            <p>"The Strawberry Swirl genuinely made me close my eyes and slow down. Nothing — nothing — beats this after a long day."</p>
-            <footer>— Aarav, berry loyalist since 2023</footer>
-          </blockquote>
-          <blockquote class="quote">
-            <div class="quote__stars">★★★★★</div>
-            <p>"I ordered the Midnight Sundae at 9 pm. It arrived at 9:24. It was gone by 9:26. My willpower sends its regards."</p>
-            <footer>— Meera, fudge enthusiast</footer>
-          </blockquote>
-          <blockquote class="quote">
-            <div class="quote__stars">★★★★★</div>
-            <p>"My kids now rate every ice cream 'out of Scoop Nirvana'. Nothing else compares, apparently. Parenting: ruined. Tummies: thrilled."</p>
-            <footer>— Dev, dad of two scoopers</footer>
-          </blockquote>
+        <div class="quotes reveal">
+          <div class="quotes__viewport" id="quotesViewport">
+            <blockquote class="quote is-active"><div class="quote__stars">★★★★★</div>
+              <p>"The Strawberry Swirl genuinely made me close my eyes and slow down. Nothing beats this after a long day."</p><footer>— Aarav, berry loyalist since 2023</footer></blockquote>
+            <blockquote class="quote"><div class="quote__stars">★★★★★</div>
+              <p>"I ordered the Midnight Sundae at 9 pm. It arrived at 9:24. It was gone by 9:26. My willpower sends its regards."</p><footer>— Meera, fudge enthusiast</footer></blockquote>
+            <blockquote class="quote"><div class="quote__stars">★★★★★</div>
+              <p>"My kids now rate every ice cream 'out of Scoop Nirvana'. Parenting: ruined. Tummies: thrilled."</p><footer>— Dev, dad of two scoopers</footer></blockquote>
+          </div>
+          <div class="quotes__dots" id="quotesDots"><button class="dot is-active" aria-label="Testimonial 1"></button><button class="dot" aria-label="Testimonial 2"></button><button class="dot" aria-label="Testimonial 3"></button></div>
         </div>
-        <div class="quotes__dots" id="quotesDots" role="tablist" aria-label="Testimonials">
-          <button class="dot is-active" aria-label="Testimonial 1"></button>
-          <button class="dot" aria-label="Testimonial 2"></button>
-          <button class="dot" aria-label="Testimonial 3"></button>
-        </div>
-      </div>
-
-      <div class="brands reveal" aria-label="As featured in">
-        <span>As dribbled across</span>
-        <em> FOODIZZ </em><em>•</em><em> SPOONFUL </em><em>•</em><em> THE DAILY SCOOP </em><em>•</em><em> DESSERT DAILY</em>
+        <div class="marquee reveal" aria-hidden="true"><div class="marquee__track">
+          <span>Belgian Chocolate</span><i>✦</i><span>Alphonso Mango</span><i>✦</i><span>Madagascar Vanilla</span><i>✦</i><span>Wild Strawberry</span><i>✦</i>
+          <span>Roasted Pistachio</span><i>✦</i><span>Blueberry Cheesecake</span><i>✦</i><span>Salted Caramel</span><i>✦</i><span>Tender Coconut</span><i>✦</i>
+          <span>Belgian Chocolate</span><i>✦</i><span>Alphonso Mango</span><i>✦</i><span>Madagascar Vanilla</span><i>✦</i><span>Wild Strawberry</span><i>✦</i>
+          <span>Roasted Pistachio</span><i>✦</i><span>Blueberry Cheesecake</span><i>✦</i><span>Salted Caramel</span><i>✦</i><span>Tender Coconut</span><i>✦</i>
+        </div></div>
       </div>
     </section>
 
-    <!-- ======= CTA BAND ======= -->
-    <section class="cta" id="visit">
-      <div class="cta__bg" data-parallax-bg="0.18" role="img" aria-label="Warm caramel dessert backdrop"></div>
-      <div class="cta__inner">
+    <!-- SLIDE 5 · FEEDBACK -->
+    <section class="slide" data-anim="foldUp" id="slide-feedback">
+      <div class="slide__inner slide__inner--center">
+        <p class="eyebrow reveal">— say it sweet —</p>
+        <h2 class="section__title reveal">How was your <span class="squiggle">scoop?</span></h2>
+        <p class="section__sub reveal">Every review is read by the head scooper (it's me, hi). Fresh quotes land in the live feed below.</p>
+        <form class="feedback-form reveal" id="feedbackForm">
+          <div class="feedback-form__row">
+            <input type="text" id="fbName" placeholder="Your name (optional)" maxlength="60" />
+            <input type="email" id="fbEmail" placeholder="Email (optional)" maxlength="80" />
+          </div>
+          <fieldset class="star-field" id="starField">
+            <legend>How many scoops of love?</legend>
+            <div class="stars" role="radiogroup" aria-label="Rating">
+              <button type="button" data-val="1" aria-label="1 star">★</button><button type="button" data-val="2" aria-label="2 stars">★</button><button type="button" data-val="3" aria-label="3 stars">★</button><button type="button" data-val="4" aria-label="4 stars">★</button><button type="button" data-val="5" aria-label="5 stars">★</button>
+            </div>
+            <output id="starOut">Tap a star</output>
+          </fieldset>
+          <textarea id="fbMsg" rows="4" required maxlength="600" placeholder="Tell us everything — the melt, the swirl, the vibes…"></textarea>
+          <button type="submit" class="btn btn--primary magnetic" id="fbSubmit">Send feedback<span class="btn__shine"></span></button>
+        </form>
+        <div class="fb-feed reveal" id="fbFeed" aria-live="polite"></div>
+      </div>
+    </section>
+
+    <!-- SLIDE 6 · VISIT / ORDER CTA -->
+    <section class="slide" data-anim="swingIn" id="slide-visit">
+      <div class="cta__bg" data-parallax-bg="0.18" role="img" aria-label="Dessert backdrop"></div>
+      <div class="slide__inner slide__inner--center cta__inner">
         <h2 class="cta__title reveal">First scoop's on us 🍨</h2>
         <p class="cta__sub reveal">Drop your email — get a free-scoop coupon and our secret flavor drops before anyone else.</p>
         <form class="cta__form reveal" id="joinForm" autocomplete="off">
           <input type="email" id="joinEmail" placeholder="you@hungry.com" required aria-label="Email address" />
           <button type="submit" class="btn btn--primary magnetic" id="confettiBtn">Gimme the scoop<span class="btn__shine"></span></button>
         </form>
-        <p class="cta__note reveal">No spam. Only sprinkles. Unsubscribe anytime.</p>
+        <div class="cta__chips reveal">
+          <button class="chip" data-goto="1">🛒 Back to flavors</button>
+          <a class="chip" href="/admin" target="_blank" rel="noopener">📊 Store dashboard</a>
+        </div>
+        <p class="cta__note reveal">12 Cone Lane, Sweet Town · Open 11 am – 11 pm · +1 555 010 1010</p>
       </div>
     </section>
 
-    <!-- ======= FOOTER ======= -->
-    <footer class="footer">
-      <div class="footer__inner">
-        <div class="footer__brand">
-          <span class="footer__logo">Scoop<em>Nirvana</em></span>
-          <p>Handcrafted happiness, churned daily since 2018.<br />12 Cone Lane, Sweet Town.</p>
-        </div>
-        <nav class="footer__col" aria-label="Explore">
-          <h4>Explore</h4>
-          <a href="#flavors">Flavors</a>
-          <a href="#craft">Our craft</a>
-          <a href="#gallery">Gallery</a>
-        </nav>
-        <nav class="footer__col" aria-label="Company">
-          <h4>Company</h4>
-          <a href="#">Careers</a>
-          <a href="#">Franchise</a>
-          <a href="#">Press kit</a>
-        </nav>
-        <div class="footer__col">
-          <h4>Say hi</h4>
-          <a href="mailto:hello@scoopnirvana.com">hello@scoopnirvana.com</a>
-          <a href="tel:+15550101010">+1 555 010 1010</a>
-          <div class="footer__social">
-            <a href="#" aria-label="Instagram">📸</a>
-            <a href="#" aria-label="Twitter">🐦</a>
-            <a href="#" aria-label="YouTube">▶️</a>
-          </div>
-        </div>
-      </div>
-      <p class="footer__legal">
-        © 2026 Scoop Nirvana · Imagery from <a href="https://unsplash.com" target="_blank" rel="noopener">Unsplash</a> · Made with too much cream
-      </p>
-    </footer>
-
-    <button class="to-top" id="toTop" aria-label="Back to top">↑</button>
-    <div class="toast" id="toast" role="status" aria-live="polite"></div>
-    <div class="lightbox" id="lightbox" aria-hidden="true">
-      <button class="lightbox__close" id="lightboxClose" aria-label="Close">✕</button>
-      <img id="lightboxImg" src="" alt="Enlarged gallery image" />
-    </div>
-
   </main>
 
+  <!-- ======= ARROWS ======= -->
+  <button class="deck-arrow deck-arrow--prev" id="arrowPrev" aria-label="Previous slide">↑</button>
+  <button class="deck-arrow deck-arrow--next" id="arrowNext" aria-label="Next slide">↓</button>
+
+  <!-- ======= CART DRAWER ======= -->
+  <aside class="drawer" id="cartDrawer" aria-hidden="true" aria-label="Shopping cart">
+    <header class="drawer__head"><h3>Your cone 🍦</h3><button class="drawer__close" id="cartClose" aria-label="Close cart">✕</button></header>
+    <div class="drawer__items" id="cartItems"></div>
+    <footer class="drawer__foot">
+      <div class="drawer__row"><span>Subtotal</span><b id="cartSubtotal">₹0</b></div>
+      <div class="drawer__row"><span>Tax (5%)</span><b id="cartTax">₹0</b></div>
+      <div class="drawer__row"><span>Delivery</span><b id="cartDelivery">₹0</b></div>
+      <div class="drawer__row drawer__row--total"><span>Total</span><b id="cartTotal">₹0</b></div>
+      <button class="btn btn--primary" id="checkoutBtn">Checkout →<span class="btn__shine"></span></button>
+      <p class="drawer__hint">Free delivery over ₹500 · Pay by UPI, card, or cash</p>
+    </footer>
+  </aside>
+
+  <!-- ======= CHECKOUT MODAL ======= -->
+  <div class="modal" id="checkoutModal" aria-hidden="true">
+    <div class="modal__panel" role="dialog" aria-modal="true" aria-labelledby="coTitle">
+      <button class="modal__close" id="coClose" aria-label="Close checkout">✕</button>
+
+      <div class="co-step" id="coStepDetails">
+        <h3 id="coTitle">Checkout — who's scooping?</h3>
+        <form id="coForm">
+          <input type="text" id="coName" placeholder="Name" required maxlength="60" />
+          <input type="email" id="coEmail" placeholder="Email" required maxlength="80" />
+          <input type="tel" id="coPhone" placeholder="Phone (for delivery)" maxlength="20" />
+          <textarea id="coNotes" rows="2" placeholder="Any notes? allergies, extra sprinkles…" maxlength="300"></textarea>
+          <div class="co-totals" id="coTotals"></div>
+          <button type="submit" class="btn btn--primary">Continue to payment<span class="btn__shine"></span></button>
+        </form>
+      </div>
+
+      <div class="co-step" id="coStepPay" hidden>
+        <h3>Pay <span id="payAmount"></span></h3>
+        <div class="pay-methods">
+          <label class="pay-method"><input type="radio" name="payMethod" value="upi" checked /><span>📲 UPI</span><small>GPay · PhonePe · Paytm</small></label>
+          <label class="pay-method"><input type="radio" name="payMethod" value="card" /><span>💳 Card</span><small>Visa · Mastercard · RuPay</small></label>
+          <label class="pay-method"><input type="radio" name="payMethod" value="cash" /><span>💵 Cash on delivery</span><small>Pay at the door</small></label>
+        </div>
+        <div class="pay-detail" id="upiDetail">
+          <p class="pay-vpa">Merchant UPI: <b>scoopnirvana@upi</b></p>
+          <input type="text" id="upiVpa" placeholder="yourname@upi" maxlength="60" />
+          <img id="upiQr" alt="UPI QR code" width="150" height="150" />
+        </div>
+        <div class="pay-detail" id="cardDetail" hidden>
+          <input type="text" id="cardNum" placeholder="Card number (demo: any 16 digits)" maxlength="19" inputmode="numeric" />
+          <div class="pay-row"><input type="text" placeholder="MM/YY" maxlength="5" /><input type="text" placeholder="CVV" maxlength="3" inputmode="numeric" /></div>
+        </div>
+        <div class="co-totals" id="payTotals"></div>
+        <button class="btn btn--primary" id="payBtn">Pay now<span class="btn__shine"></span></button>
+        <button class="link-btn" id="payBackBtn">← Back to details</button>
+      </div>
+
+      <div class="co-step co-success" id="coStepDone" hidden>
+        <div class="co-success__emoji" id="successEmoji">🎉</div>
+        <h3 id="successTitle">Order confirmed!</h3>
+        <p id="successBody"></p>
+        <button class="btn btn--primary" id="doneBtn">Keep scooping 🍨<span class="btn__shine"></span></button>
+      </div>
+    </div>
+  </div>
+
+  <!-- global bits -->
+  <button class="to-top" id="toTop" aria-label="Back to first slide">↑</button>
+  <div class="toast" id="toast" role="status" aria-live="polite"></div>
+  <div class="lightbox" id="lightbox" aria-hidden="true">
+    <button class="lightbox__close" id="lightboxClose" aria-label="Close">✕</button>
+    <img id="lightboxImg" src="" alt="Enlarged gallery image" />
+  </div>
+
+  <script src="vendor/three.min.js"></script>
+  <script src="scene3d.js"></script>
   <script src="script.js"></script>
 </body>
 </html>
